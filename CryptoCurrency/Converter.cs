@@ -4,7 +4,7 @@ namespace CryptoCurrency
 {
     public class Converter
     {
-        private const int _decimalPrecision = 8; // need to be specified for correctness and consistency
+        private const int _decimalPrecision = 8; // need to be specified for correctness and consistency. 
 
         private readonly IFakeCurrencyRateRepository currencyRateRepository = new FakeCurrencyRateRepository();
 

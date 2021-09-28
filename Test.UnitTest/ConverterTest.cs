@@ -9,9 +9,21 @@ namespace Test.UnitTest
     // "Priddecimalpræcisionklasser": (UGYLDIG:<0.00000001); (GYLDIG:>=0.00000001)
     // "Valutakodeklasser": (UGYLDIG:færre end 3 tegn), (GYLDIG:præcis 3 tegn); (UGYLDIG:flere end 3 tegn)
     // "Valutakodetegnklasser": (UGYLDIG:<'A' eller >'Z'), (UGYLDIG:>='A' og <='Z')
+    
+    // Af Ækvivalensklasserme ses det at der er foretaget yderlige specifikationer i forhold til requirements.
+    // Det skal selvfølgelig diskuteres med interessenterne. Det er vigtigt at påpege at virkeligheden er en anden, tidligt.
 
-    // Som det ses er der lavet yderlige specifikationer i forhold til requirements.
-    // Det skal selvfølgelig diskuteres med interessenterne. Det er vigtigt at påpege at virkeligheden er en anden tidligt.
+    // Navngivning af valutaer er i praksis svært at validere. Jeg kunne have ladet det være frit, men det giver ikke mening at
+    // lade åbenlyse mangler passere. Vi må følge standarderne bare lidt.
+    // Anvendelse af et valutanavn som 'Bitcoin' vil fejle - det skal være 3-bogstavskombinationer. 
+
+    // Nogle af testene omkring antal decimaler sigter mod implementationsdetaljer såsom at præcisionenen er forventet til 8 decimaler,
+    // men under antagelsen, at der burde være specificeret et fast antal decimalers præcision,
+    // så vil en succesfuld refaktorering jo have samme adfærd og derfor er testene ikke sårbare over for refaktorering.
+    // Hvis nogle skulle finde på at ændre kravet til decimaler - ja så fejler testene jo med al rimelighed, og det er vi jo også glade for,
+    // når nu Converterens algoritme er ændret. 
+    // Jeg vil sige, at det er mere sårbart at lade præcisionskravet være uspecificeret - det kan afstedkomme helt andre sporadiske unøjagtigheder.
+
     
     public class ConverterTest
     {
