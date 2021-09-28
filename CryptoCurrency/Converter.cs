@@ -4,6 +4,7 @@ namespace CryptoCurrency
 {
     public class Converter
     {
+        private const int _decimalPrecision = 8; // need to be specified for correctness and consistency
 
         private readonly IFakeCurrencyRateRepository currencyRateRepository = new FakeCurrencyRateRepository();
 
@@ -49,7 +50,8 @@ namespace CryptoCurrency
         {            
             var fromRate = currencyRateRepository.GetRate(fromCurrencyName.ToUpper());
             var toRate = currencyRateRepository.GetRate(toCurrencyName.ToUpper());
-            return (fromRate/ toRate) * amount;
+            var convertedAmount = (fromRate / toRate) * amount;
+            return RoundAmount(convertedAmount);
         }
 
 
@@ -61,7 +63,7 @@ namespace CryptoCurrency
         /// <returns></returns>
         private double RoundAmount(double price)
         {
-            return Math.Round(price, 8, MidpointRounding.ToEven);
+            return Math.Round(price, _decimalPrecision, MidpointRounding.ToEven);
         }
     }
 }

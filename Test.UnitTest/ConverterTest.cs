@@ -163,10 +163,13 @@ namespace Test.UnitTest
         [Theory]
         [InlineData("XXX", 100, "YYY", 100, 1, 1)]
         [InlineData("BTC", 40000, "ETH", 10000, 1, 4)]
+        [InlineData("BtC", 40000, "etH", 10000, 1, 4)] // case insensitive
         [InlineData("BTC", 40000, "ETH", 10000, 10, 40)]
-        [InlineData("ETH", 10000, "BTC", 40000, 1, 0.25)]
-        [InlineData("AAA", 0.00000001, "BBB", 1, 5000000, 5000000E-08)]
-        [InlineData("AAA", 1.0E+08, "BBB", 1, 1, 1.0E+08)]
+        [InlineData("ETH", 10000, "BTC", 40000, 1, 0.25)] 
+        [InlineData("AAA", 0.00000001, "BBB", 1, 5000000, 5000000E-08)] // small prices
+        [InlineData("AAA", 1.0E+08, "BBB", 1, 1, 1.0E+08)] // large price        
+        [InlineData("zzz", 1, "eee", 14, 1, 0.07142857)]  // 8 decimal rounding down; 0.0714285714285
+        [InlineData("zzz", 1, "eee", 66, 1, 0.01515152)]  // 8 decimal rounding up on midway; 0.01515151515....
         public void Der_konverteres_korrekt(string fraValuta, double prisFraValuta, string tilValuta, double prisTilValuta, double fraAntal, double tilForventetlBeloeb)
         {
             var sut = new Converter();
