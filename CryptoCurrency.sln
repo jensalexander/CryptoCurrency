@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoCurrency", "CryptoCurrency\CryptoCurrency.csproj", "{45BCA70A-F248-4526-AF15-D0CE5D0F1602}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptoCurrency", "CryptoCurrency\CryptoCurrency.csproj", "{45BCA70A-F248-4526-AF15-D0CE5D0F1602}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestSuite", "TestSuite", "{6E24FD24-99C1-4872-9940-A627F593B037}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.UnitTest", "Test.UnitTest\Test.UnitTest.csproj", "{88BE5860-A508-4400-85C5-B5D527676AEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{45BCA70A-F248-4526-AF15-D0CE5D0F1602}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45BCA70A-F248-4526-AF15-D0CE5D0F1602}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45BCA70A-F248-4526-AF15-D0CE5D0F1602}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88BE5860-A508-4400-85C5-B5D527676AEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88BE5860-A508-4400-85C5-B5D527676AEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88BE5860-A508-4400-85C5-B5D527676AEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88BE5860-A508-4400-85C5-B5D527676AEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{88BE5860-A508-4400-85C5-B5D527676AEF} = {6E24FD24-99C1-4872-9940-A627F593B037}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {784AF74C-8595-4BA3-94F3-8969C8EF9AD2}

@@ -4,6 +4,9 @@ namespace CryptoCurrency
 {
     public class Converter
     {
+
+        private readonly IFakeCurrencyRateRepository currencyRateRepository = new FakeCurrencyRateRepository();
+
         /// <summary>
         /// Angiver prisen for en enhed af en kryptovaluta. Prisen angives i dollars.
         /// Hvis der tidligere er angivet en værdi for samme kryptovaluta, 
@@ -13,7 +16,24 @@ namespace CryptoCurrency
         /// <param name="price">Prisen på en enhed af valutaen målt i dollars. Prisen kan ikke være negativ</param>
         public void SetPricePerUnit(String currencyName, double price)
         {
+            var currency = currencyName.ToUpper();
+            var afrundetCurrency = RoundAmount(price);
 
+
+            if (price <= 0)
+                throw new ArgumentException($"Ugyldig negativ pris: {price}$");
+
+            if (price != afrundetCurrency)
+                throw new ArgumentException($"Ugyldig præcision på pris: {price}$");
+
+            if (currency.Length != 3)
+                throw new ArgumentException($"Ugyldig længde på valuta {currencyName}");
+            
+            foreach(var c in currency)
+                if(c < 'A' || c > 'Z')
+                    throw new ArgumentException($"Ugyldige tegn i valuta {currencyName}");
+
+            currencyRateRepository.SetRate(currency, afrundetCurrency);
         }
 
         /// <summary>
@@ -26,8 +46,22 @@ namespace CryptoCurrency
         /// <param name="amount">Beløbet angivet i valutaen angivet i fromCurrencyName</param>
         /// <returns>Værdien af beløbet i toCurrencyName</returns>
         public double Convert(String fromCurrencyName, String toCurrencyName, double amount) 
+        {            
+            var fromRate = currencyRateRepository.GetRate(fromCurrencyName.ToUpper());
+            var toRate = currencyRateRepository.GetRate(toCurrencyName.ToUpper());
+            return (fromRate/ toRate) * amount;
+        }
+
+
+        /// <summary>
+        /// De forskellig krypto valutaer har forskellig præcision.
+        /// Der er intet specificeret om decimal præcision. Her antages 8 decimaler uanset valuta 
+        /// </summary>
+        /// <param name="price"></param>
+        /// <returns></returns>
+        private double RoundAmount(double price)
         {
-            return 0;
+            return Math.Round(price, 8, MidpointRounding.ToEven);
         }
     }
 }
