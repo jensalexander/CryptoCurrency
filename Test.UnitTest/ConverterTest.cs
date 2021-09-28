@@ -12,7 +12,7 @@ namespace Test.UnitTest
     
     // Af Ækvivalensklasserme ses det at der er foretaget yderlige specifikationer i forhold til requirements.
     // Det skal selvfølgelig diskuteres med interessenterne. Det er vigtigt at påpege at virkeligheden er en anden, tidligt.
-
+    
     // Navngivning af valutaer er i praksis svært at validere. Jeg kunne have ladet det være frit, men det giver ikke mening at
     // lade åbenlyse mangler passere. Vi må følge standarderne bare lidt.
     // Anvendelse af et valutanavn som 'Bitcoin' vil fejle - det skal være 3-bogstavskombinationer. 
@@ -23,6 +23,7 @@ namespace Test.UnitTest
     // Hvis nogle skulle finde på at ændre kravet til decimaler - ja så fejler testene jo med al rimelighed, og det er vi jo også glade for,
     // når nu Converterens algoritme er ændret. 
     // Jeg vil sige, at det er mere sårbart at lade præcisionskravet være uspecificeret - det kan afstedkomme helt andre sporadiske unøjagtigheder.
+    // Vi kan ikke lade præcision være tilfældig, vi vil gerne have samme resultat hver gang også uanset hvilken hardware/OS der afvikles på.
 
     
     public class ConverterTest
