@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+﻿using System.Collections.Generic;
 
 namespace CryptoCurrency
 {
@@ -10,7 +10,7 @@ namespace CryptoCurrency
 
     internal class FakeCurrencyRateRepository : IFakeCurrencyRateRepository
     {
-        private ConcurrentDictionary<string, double> currencyRates = new ConcurrentDictionary<string, double>();
+        private Dictionary<string, double> currencyRates = new Dictionary<string, double>();
 
         internal FakeCurrencyRateRepository()
         {            
@@ -21,7 +21,7 @@ namespace CryptoCurrency
             if (currencyRates.ContainsKey(currencyName))
                 return currencyRates[currencyName];
 
-            throw new System.ArgumentException($"Ukendt kryptovaluta {currencyName}");
+            throw new System.ArgumentException($"Ukendt valuta {currencyName}");
         }
 
         public void SetRate(string currencyName, double rate)

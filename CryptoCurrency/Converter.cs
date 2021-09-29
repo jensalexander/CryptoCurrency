@@ -4,10 +4,13 @@ namespace CryptoCurrency
 {
     public class Converter
     {
-        private const int _decimalPrecision = 8; // need to be specified for correctness and consistency. 
-        private const int _maxNameLength = 3;    // choice of standards
-
+        private const int _decimalPrecisionUnits = 8; // need to be specified and locked for correctness and consistency. 
+        
         private readonly IFakeCurrencyRateRepository currencyRateRepository = new FakeCurrencyRateRepository();
+
+        private double RoundAmount(double price) => Math.Round(price, _decimalPrecisionUnits, MidpointRounding.ToEven);
+
+        private string NormalizeName(string currencyName) => currencyName.ToUpper();
 
         /// <summary>
         /// Angiver prisen for en enhed af en kryptovaluta. Prisen angives i dollars.
@@ -23,7 +26,7 @@ namespace CryptoCurrency
             if (price <= 0)
                 throw new ArgumentException($"Ugyldig negativ pris: {price}$");
 
-            if (currency.Length != _maxNameLength)
+            if (currency.Length == 0)
                 throw new ArgumentException($"Ugyldig længde på valuta {currencyName}");
             
             foreach(var c in currency)
@@ -49,17 +52,6 @@ namespace CryptoCurrency
             var convertedAmount = (fromRate / toRate) * amount;
             return RoundAmount(convertedAmount);
         }
-
-
-        /// <summary>
-        /// De forskellig krypto valutaer har forskellig præcision.
-        /// Der er intet specificeret om decimal præcision. Her antages 8 decimaler uanset valuta 
-        /// </summary>
-        /// <param name="price"></param>
-        /// <returns></returns>
-        private double RoundAmount(double price)
-        {
-            return Math.Round(price, _decimalPrecision, MidpointRounding.ToEven);
-        }
+        
     }
 }
