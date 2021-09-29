@@ -4,42 +4,6 @@ using Xunit;
 
 namespace Test.UnitTest
 {
-    // Ækvivalensklasser.
-    // A) "Prisklasser": (UGYLDIG:<0); (UGYLDIG:0); (GYLDIG:>0)
-    // B) "AntalKryptoEnhedsDecimalpræcisionklasser": (UGYLDIG:<0.00000001); (GYLDIG:>=0.00000001)
-    // C) "Valutanavnklasser": (UGYLDIG:længde=0), (GYLDIG:længde>0)
-    // D) "Valutanavntegnklasser": (UGYLDIG:<'A' eller >'Z'), (GYLDIG:>='A' og <='Z')
-
-    // Af Ækvivalensklasserme ses det at der er foretaget yderlige specifikationer i forhold til opgavens specificerede requirements.
-    // Specifikationsændringer diskuteres selvfølgelig med interessenterne.
-    // Det er vigtigt at påpege at virkeligheden kan strække sig ud over angivne specifikationer.
-
-    // Kommentar til (A) "Prisklasser":
-    // Det er specificeret at prisen ikke kan være negativ. Men jeg vil udfordre, at en pris på 0 heller ikke giver mening på et værdipapir- og valuta-marked.
-    // Jeg tilføjer derfor, at 0-pris er sin egen ugyldige ækvivalenspartition eller ihvertfald som minimum er del af den ugyldige pris-ækvivalenspartition, der indeholder negativ priser.
-
-    // Kommentar til (B) "AntalKryptoEnhedsDecimalpræcisionklasser":
-    // Der er ikke specificeret maksimum antal decimaler på antal kryptoenheder.
-    // Antallet er iøvrigt (in real-life) forskelligt mellem varianter af kryptovalutaer på markedet.
-    // Jeg tilføjer derfor, at præcisionenen er forventet til højest 8 decimaler (bitcoin-præcision) for eksemplets skyld. 
-    // Nogle af testene tester på antal decimaler på kryptoenhed der konverteres til,
-    // men under antagelsen at der burde være specificeret et fast antal decimalers præcision,
-    // så vil en succesfuld refaktorering jo have samme adfærd og derfor er testene ikke sårbare over for refaktorering.
-    // Hvis nogen skulle finde på at ændre kravet til antal decimaler og dermed implementationen af converten -
-    // ja så fejler testene jo med al rimelighed, og det er vi jo også glade for, når nu Converterens algoritme(adfærd) er ændres. 
-    // Jeg vil sige, at det er mere sårbart at lade præcisionskravet være uspecificeret - det kan afstedkomme helt andre sporadiske unøjagtigheder.
-    // Vi kan ikke lade præcision være tilfældig, vi vil gerne have samme resultat hver gang, specielt når vi tester.
-    // I produktion er der sikkert ingen der finder fejlene før de havner som afvigelser i bogholderiets regneark.
-
-    // Kommentarer til (C) "Valutanavnklasser":
-    // Der er ikke specificeret nogle regler for navngivning af valuta.
-    // Jeg tilføjer derfor reglen om at valutaen skal have et navn.
-    
-    // Kommentarer til (D) "Valutanavntegnklasser":
-    // Der er ikke specificeret nogle regler for navngivning af valuta.
-    // Jeg tilføjer derfor reglen om at navnet skal bestå af ascii tegn og behandles case-insensitivt.
-    // Navngivningen af valuta er i praksis svær at validere uden en opdateret oversigt.    
-
 
     public class ConverterTest
     {

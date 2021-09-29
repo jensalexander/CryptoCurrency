@@ -21,7 +21,7 @@ namespace CryptoCurrency
         /// <param name="price">Prisen på en enhed af valutaen målt i dollars. Prisen kan ikke være negativ</param>
         public void SetPricePerUnit(String currencyName, double price)
         {
-            var currency = currencyName.ToUpper();
+            var currency = NormalizeName( currencyName);
 
             if (price <= 0)
                 throw new ArgumentException($"Ugyldig negativ pris: {price}$");
@@ -47,8 +47,8 @@ namespace CryptoCurrency
         /// <returns>Værdien af beløbet i toCurrencyName</returns>
         public double Convert(String fromCurrencyName, String toCurrencyName, double amount) 
         {            
-            var fromRate = currencyRateRepository.GetRate(fromCurrencyName.ToUpper());
-            var toRate = currencyRateRepository.GetRate(toCurrencyName.ToUpper());
+            var fromRate = currencyRateRepository.GetRate(NormalizeName( fromCurrencyName));
+            var toRate = currencyRateRepository.GetRate(NormalizeName( toCurrencyName));
             var convertedAmount = (fromRate / toRate) * amount;
             return RoundAmount(convertedAmount);
         }
