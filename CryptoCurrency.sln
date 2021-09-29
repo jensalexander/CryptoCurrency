@@ -10,6 +10,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.UnitTest", "Test.UnitTest\Test.UnitTest.csproj", "{88BE5860-A508-4400-85C5-B5D527676AEF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{8414639C-2F75-407A-AFB3-90C5A28D7FE1}"
+	ProjectSection(SolutionItems) = preProject
+		Kryptovalutaer.pdf = Kryptovalutaer.pdf
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
