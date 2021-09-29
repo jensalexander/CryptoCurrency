@@ -4,7 +4,9 @@ using Xunit;
 
 namespace Test.UnitTest
 {
-
+    /// <summary>
+    /// Testene dækker Ækvivalens partionerne beskrevet i Kryptovalutaer.pdf
+    /// </summary>
     public class ConverterTest
     {
         #region Repository relateret test
