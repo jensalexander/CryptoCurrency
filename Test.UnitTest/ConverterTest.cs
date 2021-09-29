@@ -5,27 +5,41 @@ using Xunit;
 namespace Test.UnitTest
 {
     // Ækvivalensklasser.
-    // "Prisklasser": (UGYLDIG:<=0); (GYLDIG:>0)
-    // "Priddecimalpræcisionklasser": (UGYLDIG:<0.00000001); (GYLDIG:>=0.00000001)
-    // "Valutakodeklasser": (UGYLDIG:færre end 3 tegn), (GYLDIG:præcis 3 tegn); (UGYLDIG:flere end 3 tegn)
-    // "Valutakodetegnklasser": (UGYLDIG:<'A' eller >'Z'), (UGYLDIG:>='A' og <='Z')
-    
-    // Af Ækvivalensklasserme ses det at der er foretaget yderlige specifikationer i forhold til requirements.
-    // Det skal selvfølgelig diskuteres med interessenterne. Det er vigtigt at påpege at virkeligheden er en anden, tidligt.
-    
-    // Navngivning af valutaer er i praksis svært at validere. Jeg kunne have ladet det være frit, men det giver ikke mening at
-    // lade åbenlyse mangler passere. Vi må følge standarderne bare lidt.
-    // Anvendelse af et valutanavn som 'Bitcoin' vil fejle - det skal være 3-bogstavskombinationer. 
+    // A) "Prisklasser": (UGYLDIG:<0); (UGYLDIG:0); (GYLDIG:>0)
+    // B) "AntalKryptoEnhedsDecimalpræcisionklasser": (UGYLDIG:<0.00000001); (GYLDIG:>=0.00000001)
+    // C) "Valutakodeklasser": (UGYLDIG:færre end 3 tegn), (GYLDIG:præcis 3 tegn); (UGYLDIG:flere end 3 tegn)
+    // D) "Valutakodetegnklasser": (UGYLDIG:<'A' eller >'Z'), (UGYLDIG:>='A' og <='Z')
 
-    // Nogle af testene omkring antal decimaler sigter mod implementationsdetaljer såsom at præcisionenen er forventet til 8 decimaler,
-    // men under antagelsen, at der burde være specificeret et fast antal decimalers præcision,
+    // Af Ækvivalensklasserme ses det at der er foretaget yderlige specifikationer i forhold til opgavens specificerede requirements.
+    // Specifikationsændringer diskuteres selvfølgelig med interessenterne.
+    // Det er vigtigt at påpege at virkeligheden kan strække sig ud over angivne specifikationer.
+
+    // Kommentar til (A) "Prisklasser":
+    // Det er specificeret at prisen ikke kan være negativ. Men jeg vil udfordre, at en pris på 0 heller ikke giver mening på et værdipapir- og valuta-marked.
+    // Jeg tilføjer derfor, at 0-pris er sin egen ugyldige ækvivalenspartition eller ihvertfald som minimum er del af den ugyldige pris-ækvivalenspartition, der indeholder negativ priser.
+
+    // Kommentar til (B) "AntalKryptoEnhedsDecimalpræcisionklasser":
+    // Der er ikke specificeret maksimum antal decimaler på antal kryptoenheder.
+    // Antallet er iøvrigt (in real-life) forskelligt mellem varianter af kryptovalutaer på markedet.
+    // Jeg tilføjer derfor, at præcisionenen er forventet til højest 8 decimaler (bitcoin-præcision) for eksemplets skyld. 
+    // Nogle af testene tester på antal decimaler på kryptoenhed der konverteres til,
+    // men under antagelsen at der burde være specificeret et fast antal decimalers præcision,
     // så vil en succesfuld refaktorering jo have samme adfærd og derfor er testene ikke sårbare over for refaktorering.
-    // Hvis nogle skulle finde på at ændre kravet til decimaler - ja så fejler testene jo med al rimelighed, og det er vi jo også glade for,
-    // når nu Converterens algoritme er ændret. 
+    // Hvis nogen skulle finde på at ændre kravet til antal decimaler og dermed implementationen af converten -
+    // ja så fejler testene jo med al rimelighed, og det er vi jo også glade for, når nu Converterens algoritme(adfærd) er ændres. 
     // Jeg vil sige, at det er mere sårbart at lade præcisionskravet være uspecificeret - det kan afstedkomme helt andre sporadiske unøjagtigheder.
-    // Vi kan ikke lade præcision være tilfældig, vi vil gerne have samme resultat hver gang også uanset hvilken hardware/OS der afvikles på.
+    // Vi kan ikke lade præcision være tilfældig, vi vil gerne have samme resultat hver gang, specielt når vi tester.
+    // I produktion er der sikkert ingen der finder fejlene før de havner som afvigelser i bogholderiets regneark.
 
-    
+    // Kommentarer til (C) "Valutakodeklasser" og (D) "Valutakodetegnklasser":
+    // Der er ikke specificeret nogle regler for navngivning af valuta.
+    // Jeg tilføjer derfor regler, der er mere i tråd med virkeligheden.
+    // Navngivningen af valuta er i praksis svær at validere uden en opdateret oversigt.
+    // Jeg kunne have ladet det være frit, men det giver ikke mening at lade åbenlyse mangler passere. Vi må følge standarderne bare lidt.
+    // Anvendelse af et valutanavn som 'Bitcoin' vil fejle - det skal være 3-bogstavskombinationer symboler som "BTC". 
+
+
+
     public class ConverterTest
     {
         #region Repository relateret test
@@ -42,7 +56,7 @@ namespace Test.UnitTest
         /// Svaghed er at testen ikke kan garantere om det er fra- eller til-valutaen der forårsager exception.
         /// Det er ikke specificeret at exception fra converter skal melde tilbage om hvilken valuta der forårsager exception.
         /// i min impl fortæller converten hvilken valuta der fejler; men at asserte på indholdet af exception-message vil gøre testen ikke-resistent for refaktorering. 
-        /// Heldigvis er vi dækket ind af anden test der tester metoden SetPricePerUnit dom anvendes i arrange-delen.
+        /// Heldigvis er vi dækket ind af anden test, der tester SetPricePerUnit som jo anvendes i arrange-delen.
         /// </summary>
         [Fact]
         public void Der_smides_argument_exception_for_ukendt_tilvaluta()
@@ -56,11 +70,7 @@ namespace Test.UnitTest
         #endregion
 
         #region Test af pris
-
-        /// <summary>
-        /// Uspecificeret hvad der skal ske for negativ pris. 
-        /// Almen viden siger mig at vi skal smide en exception - vi vil hellere fejle tidligt.
-        /// </summary>
+        
         [Fact]
         public void Der_smides_argument_exception_når_der_tildeles_negativ_pris()
         {
@@ -69,10 +79,6 @@ namespace Test.UnitTest
             Assert.Throws<ArgumentException>(() => sut.SetPricePerUnit("BTC", -0.01));
         }
         
-        /// <summary>
-        /// Uspecificeret hvad der skal ske for nul pris. 
-        /// Almen viden siger mig at vi skal smide en exception - vi vil hellere fejle tidligt.
-        /// </summary>
         [Fact]
         public void Der_smides_argument_exception_når_der_tildeles_prisen_nul()
         {
@@ -89,33 +95,19 @@ namespace Test.UnitTest
             sut.SetPricePerUnit("BTC", 0.01);
         }
 
-        // Det er oprindeligt uspecificeret omkring decimal præcision.
-        // Præcisionen varierer iøvrigt mellem forskellige valutaer i virkeligheden.
-        // I løsningen er valgt 8 decimalers nøjagtighed.
         [Fact]
-        public void Der_smides_argument_exception_når_der_angives_flere_end_8_decimaler()
+        public void Pris_er_ikke_begrænset_af_decimal_præcision_udover_typen()
         {
             var sut = new Converter();
 
-            Assert.Throws<ArgumentException>(() => sut.SetPricePerUnit("XRP", 0.000000001));
+            sut.SetPricePerUnit("XRP", 0.0000000000000000000000000000000000000000000000000000000000000001);
         }
 
-        [Fact]
-        public void pris_med_8_eller_færre_decimaler_er_ok()
-        {
-            var sut = new Converter();
-
-            sut.SetPricePerUnit("XRP", 0.00000001);
-        }
-
+  
         #endregion
 
         #region Test af valuta navngivning
 
-        /// <summary>
-        /// Det er oprindeligt uspecificeret om navngivning omkring valutakoden - skal navgivning følge iso standard ?
-        /// Det er lidt svært at validere korrektheden på navngivningen i det hele taget, så for nu antages blot bogstavskombinationer af tre.
-        /// </summary>
         [Fact]
         public void Der_smides_argument_exception_når_valutakodens_længde_er_mindre_end_tre()
         {
@@ -176,13 +168,15 @@ namespace Test.UnitTest
         [Theory]
         [InlineData("XXX", 100, "YYY", 100, 1, 1)]
         [InlineData("BTC", 40000, "ETH", 10000, 1, 4)]
+        [InlineData("BTC", 40000, "ETH", 10000, 0.1, 0.4)] // en 1/10 fraktion
         [InlineData("BtC", 40000, "etH", 10000, 1, 4)] // case insensitive
         [InlineData("BTC", 40000, "ETH", 10000, 10, 40)]
         [InlineData("ETH", 10000, "BTC", 40000, 1, 0.25)] 
         [InlineData("AAA", 0.00000001, "BBB", 1, 5000000, 5000000E-08)] // small prices
         [InlineData("AAA", 1.0E+08, "BBB", 1, 1, 1.0E+08)] // large price        
-        [InlineData("zzz", 1, "eee", 14, 1, 0.07142857)]  // 8 decimal rounding down; 0.0714285714285
-        [InlineData("zzz", 1, "eee", 66, 1, 0.01515152)]  // 8 decimal rounding up on midway; 0.01515151515....
+        [InlineData("zzz", 1, "eee", 14, 1, 0.07142857)]  // 8 decimal rundet ned; 0.0714285714285
+        [InlineData("zzz", 1, "eee", 66, 1, 0.01515152)]  // 8 decimal rundet op; 0.01515151515....
+        [InlineData("zzz", 1.0E-30, "eee", 1.0E+30, 1, 0)]  // afrundet til 0 stk 'eee' (så du ender med at give din 'zzz' væk til ingenting)
         public void Der_konverteres_korrekt(string fraValuta, double prisFraValuta, string tilValuta, double prisTilValuta, double fraAntal, double tilForventetlBeloeb)
         {
             var sut = new Converter();

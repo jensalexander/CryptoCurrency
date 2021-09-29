@@ -2,7 +2,7 @@
 
 namespace CryptoCurrency
 {
-    public interface IFakeCurrencyRateRepository
+    internal interface IFakeCurrencyRateRepository
     {
         double GetRate(string currencyName);
         void SetRate(string currencyName, double rate);
@@ -12,7 +12,7 @@ namespace CryptoCurrency
     {
         private ConcurrentDictionary<string, double> currencyRates = new ConcurrentDictionary<string, double>();
 
-        public FakeCurrencyRateRepository()
+        internal FakeCurrencyRateRepository()
         {            
         }
 

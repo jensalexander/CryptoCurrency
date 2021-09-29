@@ -5,6 +5,7 @@ namespace CryptoCurrency
     public class Converter
     {
         private const int _decimalPrecision = 8; // need to be specified for correctness and consistency. 
+        private const int _maxNameLength = 3;    // choice of standards
 
         private readonly IFakeCurrencyRateRepository currencyRateRepository = new FakeCurrencyRateRepository();
 
@@ -18,23 +19,18 @@ namespace CryptoCurrency
         public void SetPricePerUnit(String currencyName, double price)
         {
             var currency = currencyName.ToUpper();
-            var afrundetCurrency = RoundAmount(price);
-
 
             if (price <= 0)
                 throw new ArgumentException($"Ugyldig negativ pris: {price}$");
 
-            if (price != afrundetCurrency)
-                throw new ArgumentException($"Ugyldig præcision på pris: {price}$");
-
-            if (currency.Length != 3)
+            if (currency.Length != _maxNameLength)
                 throw new ArgumentException($"Ugyldig længde på valuta {currencyName}");
             
             foreach(var c in currency)
                 if(c < 'A' || c > 'Z')
                     throw new ArgumentException($"Ugyldige tegn i valuta {currencyName}");
 
-            currencyRateRepository.SetRate(currency, afrundetCurrency);
+            currencyRateRepository.SetRate(currency, price);
         }
 
         /// <summary>
